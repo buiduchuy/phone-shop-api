@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  # nic_api_dev:
+  #   container_name: nic_api_dev
+  #   image: nic_api_dev:1.0.0
+  #   build:
+  #     context: .
+  #     target: development
+  #   ports:
+  #     - ${PORT}:${PORT}
+  #   depends_on:
+  #     - nic_mongodb
+  #   volumes:
+  #     - ./:/usr/src/app
+  #   command: npm run start:dev
+  #   restart: unless-stopped
+
+  nic_mongodb:
+    container_name: ${DATABASE_HOST}
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DATABASE_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${DATABASE_PASSWORD}
+    ports:
+      - ${DATABASE_PORT}:${DATABASE_PORT}
+    volumes:
+      - ./mongo-data:/data/db
+    restart: unless-stopped
+
+  # nic_mongo_express:
+  #   container_name: nic_mongo_express
+  #   image: mongo-express:latest
+  #   environment:
+  #     ME_CONFIG_BASICAUTH_USERNAME: ${DATABASE_USERNAME}
+  #     ME_CONFIG_BASICAUTH_PASSWORD: ${DATABASE_PASSWORD}
+  #     ME_CONFIG_MONGODB_URL: ${DATABASE_URI}
+  #   ports:
+  #     - 8081:8081
+  #   depends_on:
+  #     - nic_mongodb
+  #   restart: unless-stopped
+
+networks:
+  default:
+    driver: bridge
